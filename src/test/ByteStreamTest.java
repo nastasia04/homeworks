@@ -1,9 +1,7 @@
 package test;
-
 import code.ByteStream;
 import org.junit.*;
 import org.junit.rules.TestName;
-
 import java.io.*;
 
 public class ByteStreamTest {
@@ -25,7 +23,7 @@ public class ByteStreamTest {
         expectedResultName = prefix + testName + ".csv";
         actualResult  = "Result.csv";
         file = new File(actualResult);
-        fileKeyWords.manageFile(testFileName, actualResult);
+        fileKeyWords.manageFail(testFileName, actualResult);
     }
 
     @After
@@ -40,18 +38,19 @@ public class ByteStreamTest {
     }
 
     @Test
-    public void EnterEmptyfile() {
+    public void enterEmptyfile() {
+
         StreamTestHelper.compareTwoFiles(expectedResultName, actualResult);
     }
 
     @Test
-    public void ReadNotJavaFileWithoutKeyWords() {
+    public void readNotJavaFileWithoutKeyWords() {
         StreamTestHelper.compareTwoFiles(expectedResultName, actualResult);
     }
 
     @Test
-    public void EnterfileDoesnotExist() {
-        Assert.assertFalse(file.exists());
+    public void enterfileDoesnotExist() {
+       Assert.assertFalse(file.exists());
     }
 
 

@@ -38,6 +38,7 @@ public class StreamTestHelper {
         }
     }
 
+
     private static List<String> readLine (BufferedReader Result, List<String> readlines) throws IOException{
         String line;
             while ((line = Result.readLine()) != null) {

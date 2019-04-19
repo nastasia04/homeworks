@@ -2,61 +2,95 @@ package code;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.*;
+
+
 
 public class ActorsDataBase implements Serializable {
-    private Map<String, List<String>> actorsInFilms = new HashMap();
+    private List <Film> movies = new ArrayList<>();
 
-    public void addActorOrMovie(String actor, String film) {
-        if (!actorsInFilms.containsKey(actor)) {
-            actorsInFilms.put(actor, new ArrayList<String>());
-        }
-        actorsInFilms.get(actor).add(film);
-    }
-
-    public void dropMovieFromActor(String actor, String movie) {
-        if (!actorsInFilms.containsKey(actor)) {
-            System.out.println("This actor doesn't exist in your collection");
+    public void addMovie(String filmTitle) {
+        if(isMovieExist(filmTitle)){
+            System.out.println("This movie is exist in your collection yet");
             return;
         }
-        if(!actorsInFilms.get(actor).contains(movie)){
+        Film temp = new Film(filmTitle);
+        movies.add(temp);
+    }
+    
+    public void addActorAtMovie(String movieTitle, String nameActor, String surNameActor) {
+        if(!isMovieExist(movieTitle)){
             System.out.println("This movie doesn't exist in your collection");
             return;
         }
-        actorsInFilms.get(actor).removeIf(x -> x.equals(movie));
+        movies = movies.stream().
+                peek(film -> {if (film.getTitle().equals(movieTitle))
+                    film.addActorToFilm(nameActor,surNameActor);}).
+                collect(Collectors.toList());
     }
-
-    public void dropActor(String actor) {
-        if (!actorsInFilms.containsKey(actor)) {
-            System.out.println("Actor " + actor + " doesn't exist in your collection");
+    
+    public void dropActor(String movieTitle, String nameActor, String surNameActor) {
+        if(!isMovieExist(movieTitle)){
+            System.out.println("This movie doesn't exist in your collection");
             return;
         }
-        actorsInFilms.remove(actor);
+        movies = movies.stream().
+                peek(film -> {if(film.getTitle().equals(movieTitle) && film.getActors().stream().
+                        anyMatch(actors -> actors.getActor().equals(nameActor + " " + surNameActor))){
+                    film.deleteActorFromFilm(nameActor,surNameActor);
+                }
+                }).
+                collect(Collectors.toList());
     }
 
-    public void changeMovieTitle(String actor, String oldTitle, String newTitle) {
-        if (!actorsInFilms.containsKey(actor)) {
-            System.out.println("Actor " + actor + " doesn't exist in your collection");
+    public void dropMovie(String movieTitle) {
+        if(!isMovieExist(movieTitle)){
+            System.out.println("This movie doesn't exist in your collection");
             return;
         }
-        int index;
-        for (String x : actorsInFilms.get(actor)) {
-            if (x.equals(oldTitle)) {
-                index = actorsInFilms.get(actor).indexOf(x);
-                actorsInFilms.get(actor).set(index, newTitle);
-                return;
-            }
+        movies.removeIf(film -> film.getTitle().equals(movieTitle));
+    }
+
+
+    public void changeMovieTitle(String oldMovieTitle, String newMovieTitle) {
+        if(!isMovieExist(oldMovieTitle)){
+            System.out.println("This movie doesn't exist in your collection");
+            return;
         }
-        System.out.println("This movie doesn't exist in your collection");
+        movies = movies.stream().
+                peek(film -> {if(film.getTitle().equals(oldMovieTitle)){
+                    film.changeTitle(newMovieTitle);
+                }
+                }).
+                collect(Collectors.toList());
     }
 
-    public Map<String, List<String>> getAll() {
-        return actorsInFilms;
+    public List<String> getFilmsFromActor(String actorName, String actorSurName) {
+        List<String> temp = movies.stream().
+                filter(film -> film.actorInFilm(actorName,actorSurName)).
+                map(film -> film.getTitle()).
+                collect(Collectors.toList());
+        if(temp.size() > 0)
+            return temp;
+         return null;
     }
 
-    public List<String> getFilmsFromActor(String actor) {
-        return actorsInFilms.get(actor);
+    public List<String> getAllMoviesTitle() {
+        return movies.stream().map(film -> film.getTitle()).collect(Collectors.toList());
+
+    }
+    public List<List<String>> getAllActorsNames() {
+        List<List<String>> temp;
+        temp = movies.stream().map(film ->
+                film.getActors().stream().map(actor->actor.getActor()).collect(Collectors.toList()))
+                .collect(Collectors.toList());
+        return temp.stream().peek(actorsList ->Collections.sort(actorsList)).collect(Collectors.toList());
+
+    }
+
+    private boolean isMovieExist(String movieTitle){
+        return movies.stream()
+                .anyMatch(film -> film.getTitle().equals(movieTitle));
     }
 }

@@ -30,16 +30,21 @@ public class TextStream implements ReadAndWriteKeyWords {
                     }
                 }
             }
-            for (Map.Entry entry : KeyWords.entrySet()) {
-                if ((int) entry.getValue() > 0) {
-                    wr.write(String.valueOf(entry.getKey()));
-                    wr.write("," + entry.getValue() + "\n");
-                }
-            }
+            writeFile(wr);
         } catch (FileNotFoundException e) {
             System.out.println("File doesn't exist - " + e.getMessage());
         } catch (IOException e) {
             System.out.println(e.getMessage());
+        }
+    }
+
+    private void writeFile(BufferedWriter wr) throws IOException {
+
+        for (Map.Entry entry : KeyWords.entrySet()) {
+            if ((int) entry.getValue() > 0) {
+                wr.write(String.valueOf(entry.getKey()));
+                wr.write("," + entry.getValue() + "\n");
+            }
         }
     }
 }

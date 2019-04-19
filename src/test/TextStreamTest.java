@@ -1,9 +1,7 @@
 package test;
-
 import code.TextStream;
 import org.junit.*;
 import org.junit.rules.TestName;
-
 import java.io.*;
 
 
@@ -41,17 +39,17 @@ public class TextStreamTest {
     }
 
     @Test
-    public void EnterEmptyfile() {
+    public void enterEmptyfile() {
         StreamTestHelper.compareTwoFiles(expectedResultName, actualResult);
     }
 
     @Test
-    public void ReadNotJavaFileWithoutKeyWords() {
+    public void readNotJavaFileWithoutKeyWords() {
         StreamTestHelper.compareTwoFiles(expectedResultName, actualResult);
     }
 
     @Test
-    public void EnterfileDoesnotExist() {
+    public void enterfileDoesnotExist() {
         Assert.assertFalse(file.exists());
     }
 

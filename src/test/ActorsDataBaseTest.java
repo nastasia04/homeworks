@@ -1,9 +1,7 @@
 package test;
-
 import code.ActorsDataBase;
 import code.SaveAndReadMovies;
 import org.junit.*;
-
 import java.io.File;
 import java.util.*;
 import java.util.List;
@@ -25,10 +23,14 @@ public class ActorsDataBaseTest {
     public void addActorsAndMoviesAndSaveStructure() {
         structure = new ActorsDataBase();
         structure = helper.addStandartStructure(structure);
-        Assert.assertNotNull("Structure with actors is empty", structure.getAll());
-        Assert.assertEquals("Not all actors or movies in the structure",
-                helper.checkStandardtStructure(),
-                structure.getAll());
+        Assert.assertNotNull("Structure with actors is empty", structure.getAllMoviesTitle());
+
+        Assert.assertEquals("Not all movies in the structure",
+                helper.checkStandardMovies(),
+                structure.getAllMoviesTitle());
+        Assert.assertEquals("Not all actors in the structure",
+                helper.checkStandardActors(),
+                structure.getAllActorsNames());
         // save structure
         file = helper.saveOneStructure(structure, structureNamePrev);
         Assert.assertTrue("Structure wasn't saved", file.exists());
@@ -45,7 +47,7 @@ public class ActorsDataBaseTest {
 
         Assert.assertEquals("This actor was in two movies",
                 expectedMovies,
-                structure.getFilmsFromActor("Tom Hanks"));
+                structure.getFilmsFromActor("Tom", "Hanks"));
     }
 
 
@@ -56,36 +58,40 @@ public class ActorsDataBaseTest {
 
         //check saved structure
         structure = structureToRead.get(0);
-        Assert.assertEquals("Not all actors or movies in the structure",
-                helper.checkStandardtStructure(),
-                structure.getAll());
+
+        Assert.assertEquals("Not all movies in the structure",
+                helper.checkStandardMovies(),
+                structure.getAllMoviesTitle());
+        Assert.assertEquals("Not all actors in the structure",
+                helper.checkStandardActors(),
+                structure.getAllActorsNames());
 
         //change movie title
-        structure.changeMovieTitle("Robin Wright", "Forrest Gump", "Форрест Гамп");
+        structure.changeMovieTitle( "Forrest Gump", "Форрест Гамп");
         expectedMovies = new ArrayList<>();
         expectedMovies.add("Форрест Гамп");
         Assert.assertEquals("This actor was in more than one movie",
                 expectedMovies,
-                structure.getFilmsFromActor("Robin Wright"));
+                structure.getFilmsFromActor("Robin", "Wright"));
 
         //drop the actor
-        structure.dropActor("Robin Wright");
-        Assert.assertNull("There is not this actor", structure.getFilmsFromActor("Robin Wright"));
+        structure.dropActor("Форрест Гамп","Robin", "Wright");
+        Assert.assertNull("There is not this actor", structure.getFilmsFromActor("Robin", "Wright"));
 
         //delete movie
-        structure.dropMovieFromActor("Tom Hanks", "Forrest Gump");
+        structure.dropMovie("Форрест Гамп");
         expectedMovies = new ArrayList<>();
         expectedMovies.add("The Green Mile");
         Assert.assertEquals("The movie wasn't deleted",
                 expectedMovies,
-                structure.getFilmsFromActor("Tom Hanks"));
+                structure.getFilmsFromActor("Tom", "Hanks"));
         //save structure
         file = helper.saveOneStructure(structure, structureNameMiddle);
         Assert.assertTrue("Structure wasn't saved", file.exists());
     }
 
     @Test
-    public void SaveAndReadMoreThanOneObjects() {
+    public void saveAndReadMoreThanOneObjects() {
         //add three structures
         int count = 3;
         structureToSave = new ArrayList<>();
@@ -106,8 +112,12 @@ public class ActorsDataBaseTest {
         //check saved structure
         while (structureToRead.size() > 0) {
             structure = structureToRead.get(0);
-            Assert.assertEquals("The structure is incorrect",
-                    helper.checkStandardtStructure(), structure.getAll());
+            Assert.assertEquals("The structure is incorrect. Not all movies in the structure",
+                    helper.checkStandardMovies(),
+                    structure.getAllMoviesTitle());
+            Assert.assertEquals("The structure is incorrect. Not all actors in the structure",
+                    helper.checkStandardActors(),
+                    structure.getAllActorsNames());
             structureToRead.remove(0);
         }
     }
@@ -119,14 +129,15 @@ public class ActorsDataBaseTest {
         Assert.assertFalse("There isn't saved structure", structureToRead.size() > 0);
     }
 
-    //add or edit something that doesn't exist
+    //drop or edit something that doesn't exist
     @Test
     public void doesNotExist() {
         structure = new ActorsDataBase();
-        structure.dropActor("Robin Wright");
-        structure.changeMovieTitle("Tom Hanks", "Forrest Gump", "Форрест Гамп");
-        structure.dropMovieFromActor("Tom Hanks", "Forrest Gump");
-        Assert.assertTrue("This structure should be empty", structure.getAll().isEmpty());
+        structure.dropActor("Forrest Gump", "Robin", "Wright");
+        structure.changeMovieTitle("Forrest Gump", "Форрест Гамп");
+        structure.dropMovie("Forrest Gump");
+        Assert.assertTrue("This structure should be empty",
+                structure.getAllMoviesTitle().isEmpty());
     }
 
 

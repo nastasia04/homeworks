@@ -1,12 +1,9 @@
 package test;
-
 import code.ActorsDataBase;
 import code.SaveAndReadMovies;
-
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class TestMovieHelper {
 
@@ -25,28 +22,35 @@ public class TestMovieHelper {
 
 
     public ActorsDataBase addStandartStructure(ActorsDataBase structure) {
-        structure.addActorOrMovie("Tom Hanks", "Forrest Gump");
-        structure.addActorOrMovie("Robin Wright", "Forrest Gump");
-        structure.addActorOrMovie("Tom Hanks", "The Green Mile");
+        structure.addMovie( "Forrest Gump");
+        structure.addMovie( "The Green Mile");
+
+        structure.addActorAtMovie("Forrest Gump", "Tom", "Hanks");
+        structure.addActorAtMovie("Forrest Gump", "Robin", "Wright");
+        structure.addActorAtMovie("The Green Mile", "Tom", "Hanks");
+
         return structure;
     }
-    public HashMap<String, List<String>> checkStandardtStructure() {
 
-        HashMap<String, List<String>> constantStructure = new HashMap<>();
-        updateStructure(constantStructure, "Tom Hanks", new String[]{"Forrest Gump", "The Green Mile"});
-        updateStructure(constantStructure, "Robin Wright", new String[]{"Forrest Gump"});
+    public List<String> checkStandardMovies() {
 
+        List<String> constantStructure = new ArrayList<>();
+        constantStructure.add("Forrest Gump");
+        constantStructure.add( "The Green Mile");
         return constantStructure;
     }
 
-    private HashMap<String, List<String>> updateStructure(HashMap<String, List<String>> constantStructure,
-                            String actor,
-                            String [] movies){
-        List<String> tempMovies = new ArrayList<>();
-        for(String x : movies){
-            tempMovies.add(x);
-        }
-        constantStructure.put(actor, tempMovies);
+    public List<List<String>> checkStandardActors() {
+
+        List<List<String>> constantStructure = new ArrayList<>();
+        List<String> temp = new ArrayList<>();
+        temp.add("Robin Wright");
+        temp.add("Tom Hanks");
+        Collections.sort(temp);
+        constantStructure.add(temp);
+        temp = new ArrayList<>();
+        temp.add("Tom Hanks");
+        constantStructure.add(temp);
         return constantStructure;
     }
 }

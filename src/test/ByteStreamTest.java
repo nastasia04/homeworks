@@ -23,7 +23,7 @@ public class ByteStreamTest {
         expectedResultName = prefix + testName + ".csv";
         actualResult  = "Result.csv";
         file = new File(actualResult);
-        fileKeyWords.manageFail(testFileName, actualResult);
+        fileKeyWords.manageFile(testFileName, actualResult);
     }
 
     @After

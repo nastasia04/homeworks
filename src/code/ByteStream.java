@@ -14,7 +14,7 @@ public class ByteStream implements ReadAndWriteKeyWords {
         }
     }
 
-    public void manageFail(String fileReadName, String fileWriteName) {
+    public void manageFile(String fileReadName, String fileWriteName) {
 
         try (BufferedInputStream fileRead =
                      new BufferedInputStream(new FileInputStream(fileReadName));

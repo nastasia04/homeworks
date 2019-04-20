@@ -28,30 +28,35 @@ public class ByteStreamTest {
 
     @After
     public void tearDown() {
+
         file.delete();
     }
 
     @Test
     //check that resultFile doesn't contain words like: intString
     public void testComplexVariableNames() {
-        StreamTestHelper.compareTwoFiles(expectedResultName, actualResult);
-    }
-
-    @Test
-    public void enterEmptyfile() {
 
         StreamTestHelper.compareTwoFiles(expectedResultName, actualResult);
     }
 
     @Test
-    public void readNotJavaFileWithoutKeyWords() {
+    public void testReadingFromEmptyFile() {
+
         StreamTestHelper.compareTwoFiles(expectedResultName, actualResult);
     }
 
     @Test
-    public void enterfileDoesnotExist() {
-       Assert.assertFalse(file.exists());
+    public void testReadingFromFileWithoutKeyWords() {
+        StreamTestHelper.compareTwoFiles(expectedResultName, actualResult);
     }
+
+    @Test
+    public void testReadingFromFileWhichDoesnotExist() {
+
+        Assert.assertFalse(file.exists());
+    }
+
+
 
 
 }

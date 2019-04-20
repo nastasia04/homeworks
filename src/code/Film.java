@@ -10,6 +10,7 @@ public class Film implements Serializable {
         this.movieTitle = movieTitle;
     }
     public void addActorToFilm(String name, String surName){
+
         actors.add(new Actor(name, surName));
     }
     public void deleteActorFromFilm(String name, String surName){
@@ -24,12 +25,15 @@ public class Film implements Serializable {
     }
 
     public String getTitle(){
+
         return movieTitle;
     }
     public void changeTitle(String movieTitle){
+
         this.movieTitle = movieTitle;
     }
     public Set<Actor> getActors(){
+
         return actors;
     }
 }

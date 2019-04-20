@@ -21,7 +21,7 @@ public class TestMovieHelper {
     }
 
 
-    public ActorsDataBase addStandartStructure(ActorsDataBase structure) {
+    public ActorsDataBase addStandardStructure(ActorsDataBase structure) {
         structure.addMovie( "Forrest Gump");
         structure.addMovie( "The Green Mile");
 

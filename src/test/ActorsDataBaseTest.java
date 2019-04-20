@@ -20,9 +20,9 @@ public class ActorsDataBaseTest {
 
 
     @Test
-    public void addActorsAndMoviesAndSaveStructure() {
+    public void testAddActorsAndMoviesAndCheckStructureSaving() {
         structure = new ActorsDataBase();
-        structure = helper.addStandartStructure(structure);
+        structure = helper.addStandardStructure(structure);
         Assert.assertNotNull("Structure with actors is empty", structure.getAllMoviesTitle());
 
         Assert.assertEquals("Not all movies in the structure",
@@ -37,9 +37,9 @@ public class ActorsDataBaseTest {
     }
 
     @Test
-    public void addOneActorAndTwoMovies() {
+    public void testCheckTwoMoviesWithSameActor() {
         structure = new ActorsDataBase();
-        structure = helper.addStandartStructure(structure);
+        structure = helper.addStandardStructure(structure);
 
         expectedMovies = new ArrayList<>();
         expectedMovies.add("Forrest Gump");
@@ -52,7 +52,7 @@ public class ActorsDataBaseTest {
 
 
     @Test
-    public void readSavedStructureAndChangeIt() {
+    public void testCheckSavedStructureAndChangeIt() {
         structureToRead = SaveAndReadMovies.open(structureNamePrev);
         Assert.assertTrue("There no one saved structure", structureToRead.size() > 0);
 
@@ -91,13 +91,13 @@ public class ActorsDataBaseTest {
     }
 
     @Test
-    public void saveAndReadMoreThanOneObjects() {
+    public void testSaveAndReadMoreThanOneObjects() {
         //add three structures
         int count = 3;
         structureToSave = new ArrayList<>();
         for (int i = 0; i < count; i++) {
             structure = new ActorsDataBase();
-            structure =  helper.addStandartStructure(structure);
+            structure =  helper.addStandardStructure(structure);
             structureToSave.add(structure);
         }
 
@@ -123,7 +123,7 @@ public class ActorsDataBaseTest {
     }
 
     @Test
-    public void readFromFileWhichDoesNotExist() {
+    public void testReadFromFileWhichDoesNotExist() {
         structure = new ActorsDataBase();
         structureToRead = SaveAndReadMovies.open("NameDoesNotExist.txt");
         Assert.assertFalse("There isn't saved structure", structureToRead.size() > 0);
@@ -131,7 +131,7 @@ public class ActorsDataBaseTest {
 
     //drop or edit something that doesn't exist
     @Test
-    public void doesNotExist() {
+    public void testNegativeActorsAndMoviesChange() {
         structure = new ActorsDataBase();
         structure.dropActor("Forrest Gump", "Robin", "Wright");
         structure.changeMovieTitle("Forrest Gump", "Форрест Гамп");

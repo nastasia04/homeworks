@@ -6,12 +6,11 @@ import java.util.Map;
 
 public class TextStream implements ReadAndWriteKeyWords {
 
-    public void manageFile(String fileReadName, String fileWriteName) {
+    public static void manageFile(String fileReadName, String fileWriteName) {
         Map<String, Integer> keyWords = new HashMap();
         keyWordsToMap(keyWords);
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(fileReadName));
              BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(fileWriteName))) {
-            bufferedWriter.write("name,count\n");
             String line;
             while ((line = bufferedReader.readLine()) != null) {
                 countKeyWords(line, keyWords);
@@ -24,7 +23,7 @@ public class TextStream implements ReadAndWriteKeyWords {
         }
     }
 
-    private void countKeyWords (String readLine, Map<String, Integer> keyWords){
+    private static void countKeyWords (String readLine, Map<String, Integer> keyWords){
         String[] words = readLine.split("[ .,()<>]+");
         for (String word : words) {
             for (String keyWord : KEYWORDS) {
@@ -36,17 +35,17 @@ public class TextStream implements ReadAndWriteKeyWords {
         }
     }
 
-    private void writeFile(BufferedWriter wr, Map<String, Integer> keyWords) throws IOException {
-
+    private static void writeFile(BufferedWriter bufferedWriter, Map<String, Integer> keyWords) throws IOException {
+        bufferedWriter.write("name,count\n");
         for (Map.Entry entry : keyWords.entrySet()) {
             if ((int) entry.getValue() > 0) {
-                wr.write(String.valueOf(entry.getKey()));
-                wr.write("," + entry.getValue() + "\n");
+                bufferedWriter.write(String.valueOf(entry.getKey()));
+                bufferedWriter.write("," + entry.getValue() + "\n");
             }
         }
     }
 
-    private void keyWordsToMap(Map<String, Integer> keyWords){
+    private static void keyWordsToMap(Map<String, Integer> keyWords){
         for (String keyWord : KEYWORDS) {
             keyWords.put(keyWord, 0);
         }

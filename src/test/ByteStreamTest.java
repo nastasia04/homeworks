@@ -5,7 +5,6 @@ import org.junit.rules.TestName;
 import java.io.*;
 
 public class ByteStreamTest {
-    private ByteStream fileKeyWords;
     private String expectedResultName;
     private String testFileName;
     private String actualResult;
@@ -17,13 +16,12 @@ public class ByteStreamTest {
 
     @Before
     public void setUp() {
-        fileKeyWords = new ByteStream();
         String testName = name.getMethodName();
         testFileName = prefix + testName + ".java";
         expectedResultName = prefix + testName + ".csv";
         actualResult  = "Result.csv";
         file = new File(actualResult);
-        fileKeyWords.manageFile(testFileName, actualResult);
+        ByteStream.manageFile(testFileName, actualResult);
     }
 
     @After

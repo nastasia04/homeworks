@@ -6,7 +6,6 @@ import java.io.*;
 
 
 public class TextStreamTest {
-    private TextStream fileKeyWords;
     private String expectedResultName;
     private String testFileName;
     private String actualResult;
@@ -18,13 +17,12 @@ public class TextStreamTest {
 
     @Before
     public void setUp() {
-        fileKeyWords = new TextStream();
         String testName = name.getMethodName();
         testFileName = prefix + testName + ".java";
         expectedResultName = prefix + testName + ".csv";
         actualResult = "Result.csv";
         file = new File(actualResult);
-        fileKeyWords.manageFile(testFileName, actualResult);
+        TextStream.manageFile(testFileName, actualResult);
     }
 
     @After

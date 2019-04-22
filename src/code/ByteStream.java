@@ -6,14 +6,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ByteStream implements ReadAndWriteKeyWords {
+    
 
-
-
-    public void manageFile(String fileReadName, String fileWriteName) {
+    public static void manageFile(String fileReadName, String fileWriteName) {
 
         Map<byte[], Integer> keyWords = new HashMap();
         keyWordsToBite(keyWords);
-
 
         try (BufferedInputStream fileRead =
                      new BufferedInputStream(new FileInputStream(fileReadName));
@@ -33,7 +31,7 @@ public class ByteStream implements ReadAndWriteKeyWords {
         }
     }
 
-    private void writeFile(BufferedOutputStream fileWrite, Map<byte[], Integer> keyWords) throws IOException {
+    private static void writeFile(BufferedOutputStream fileWrite, Map<byte[], Integer> keyWords) throws IOException {
 
         fileWrite.write(("name,count\n").getBytes());
         for (byte[] arrayKeyWord : keyWords.keySet()) {
@@ -46,7 +44,7 @@ public class ByteStream implements ReadAndWriteKeyWords {
     }
 
 
-    private void countKeyWords(byte[] containedWords, int bytesRead, Map<byte[], Integer> keyWords ){
+    private static void countKeyWords(byte[] containedWords, int bytesRead, Map<byte[], Integer> keyWords ){
         byte[] separators = new byte[8];
         char[] separator = {' ', ',', '.', '(', ')', '<', '>', '\n'};
 
@@ -74,13 +72,13 @@ public class ByteStream implements ReadAndWriteKeyWords {
         }
     }
 
-    private void keyWordsToBite(Map<byte[], Integer> keyWords){
+    private static void keyWordsToBite(Map<byte[], Integer> keyWords){
         for (String keyWord : KEYWORDS) {
             keyWords.put(keyWord.getBytes(), 0);
         }
     }
 
-    private boolean contains(byte[] array, byte value) {
+    private static boolean contains(byte[] array, byte value) {
         for (int i = 0; i < array.length; i++) {
             if (array[i] == value) {
                 return true;
